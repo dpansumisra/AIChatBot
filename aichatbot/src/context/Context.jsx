@@ -5,8 +5,6 @@ import {useState} from 'react'
 export const Context = createContext();
 
 const ContextProvider = (props) =>{
-
-
     const [input, setinput] = useState("");
     const [recentPrompt, setrecentPrompt] = useState("");
     const [prevPrompt, setprevPrompt] = useState([]);
@@ -14,17 +12,30 @@ const ContextProvider = (props) =>{
     const [loading, setloading] = useState(false);
     const [resultData, setresultData] = useState("");
 
-    const onSent = async(prompt) =>{
+    // const onSent = async(prompt) =>{
+    //     setresultData("");
+    //     setloading(true);
+    //     setshowResult(true);
+    //     setrecentPrompt(input);
+    //     const response = await run(input);
+    //     setresultData(response);
+    //     setloading(false);
+    //     setinput("");
+    // }
+    const onSent = async () => {
+        if (!input.trim()) return; 
+        const adjustedPrompt = `${input.trim()} Please provide an accurate, exact answer in a detailed paragraph without bold letters.`;
         setresultData("");
         setloading(true);
         setshowResult(true);
-        const response = await run(input);
+        setrecentPrompt(input);
+        const response = await run(adjustedPrompt); 
         setresultData(response);
         setloading(false);
         setinput("");
-    }
+    };
+    
 
-    onSent("what is react js")
     const contextValue = {
         prevPrompt,
         setprevPrompt,
